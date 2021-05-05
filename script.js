@@ -41,12 +41,13 @@ async function drawTreeMap() {
 	d3.treemap().size([width, dimensions.boundedHeight]).padding(1)(nodes);
 	console.log(nodes);
 
-	const tiles = treemap.selectAll("g")
+	const tileGroups = treemap.selectAll("g")
 		.data(nodes.leaves())
 		.enter()
 		.append("g")
-		.style("transform", d => `translate(${d.x0}px, ${d.y0}px)`)
-		.append("rect")
+		.style("transform", d => `translate(${d.x0}px, ${d.y0}px)`);
+
+	const tiles = tileGroups.append("rect")
 		.attr("width", d => d.x1 - d.x0)
 		.attr("height", d => d.y1 - d.y0)
 		.attr("fill", d => {
@@ -58,6 +59,9 @@ async function drawTreeMap() {
 		.attr("data-name", d => d.data.name)
 		.attr("data-category", d => d.data.category)
 		.attr("data-value", d => d.data.value)
+
+	const tileText = tileGroups.append("text")
+		.text(d => d.data.name)
 }
 
 drawTreeMap();
