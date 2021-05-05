@@ -41,28 +41,20 @@ async function drawTreeMap() {
 	d3.treemap().size([width, dimensions.boundedHeight]).padding(1)(nodes);
 	console.log(nodes);
 
-	treemap.selectAll(".tile")
+	const tiles = treemap.selectAll("g")
 		.data(nodes.leaves())
 		.enter()
+		.append("g")
+		.style("transform", d => `translate(${d.x0}px, ${d.y0}px)`)
 		.append("rect")
-		.attr("class", "tile")
-		.attr("x", d => d.x0)
-		.attr("y", d => d.y0)
 		.attr("width", d => d.x1 - d.x0)
 		.attr("height", d => d.y1 - d.y0)
 		.attr("fill", d => {
-			while (d.depth > 1)
+			while( d.depth > 1 )
 				d = d.parent;
 			return colorScale(d.data.name);
-		});
-
-	treemap.selectAll("text")
-		.data(nodes.leaves())
-		.enter()
-		.append("text")
-		.attr("x", d => d.x0 + 5)
-		.attr("y", d => d.y0 + 5)
-		.text(d => d.data.name)
+		})
+		.attr("class", "tile")
 }
 
 drawTreeMap();
