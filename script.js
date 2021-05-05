@@ -7,13 +7,13 @@ async function drawTreeMap() {
 
 	// 2. Create dimensions
 	
-	const width = 1500;
+	const width = 1440;
 	const height = 850;
 	dimensions = {
 		width: width,
 		height: height,
 		margin: {
-			top: 100,
+			top: 50,
 		},
 	};
 	dimensions.boundedHeight = height - dimensions.margin.top;
@@ -55,6 +55,9 @@ async function drawTreeMap() {
 			return colorScale(d.data.name);
 		})
 		.attr("class", "tile")
+		.attr("data-name", d => d.data.name)
+		.attr("data-category", d => d.data.category)
+		.attr("data-value", d => d.data.value)
 }
 
 drawTreeMap();
