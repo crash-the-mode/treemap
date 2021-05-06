@@ -7,15 +7,17 @@ async function drawTreeMap() {
 
 	// 2. Create dimensions
 	
-	const width = 1440;
+	const width = 1750;
 	const height = 850;
 	dimensions = {
 		width: width,
 		height: height,
 		margin: {
 			top: 100,
+			right: 150,
 		},
 	};
+	dimensions.boundedWidth = width - dimensions.margin.right;
 	dimensions.boundedHeight = height - dimensions.margin.top;
 
 	// 3. Draw canvas
@@ -38,7 +40,7 @@ async function drawTreeMap() {
 	// 5. Draw data
 	
 	const nodes = d3.hierarchy(movies).sum(d => d.value).sort((a, b) => b.value - a.value);
-	d3.treemap().size([width, dimensions.boundedHeight]).padding(1)(nodes);
+	d3.treemap().size([dimensions.boundedWidth, dimensions.boundedHeight]).padding(1)(nodes);
 	console.log(nodes);
 
 	const clips = treemap.append("defs")
@@ -91,10 +93,36 @@ async function drawTreeMap() {
 
 	const description = canvas.append("text")
 		.attr("id", "description")
-		.text("Top 47 US Box Office Performers")
+		.text("Top 47 US Box Office Performers Grouped by Genre")
 		.attr("x", dimensions.width / 2)
 		.attr("y", 75)
-		.style("text-anchor", "middle")
+		.style("text-anchor", "middle");
+
+	const legendGroup = canvas.append("g")
+		.attr("id", "legend")
+		.style("transform", `translate(${dimensions.boundedWidth + 25}px, ${dimensions.boundedHeight / 2}px)`);
+
+	console.log(nodes.children)
+	const legendRects = legendGroup.selectAll(".legend-item")
+		.data(nodes.children)
+		.enter()
+		.append("rect")
+		.attr("class", "legend-item")
+		.attr("x", 5)
+		.attr("y", (d, i) => i * 30)
+		.attr("width", 20)
+		.attr("height", 20)
+		.attr("fill", d => colorScale(d.data.name));
+
+	const legendText = legendGroup.selectAll(".legend-text")
+		.data(nodes.children)
+		.enter()
+		.append("text")
+		.text(d => d.data.name)
+		.attr("x", 30)
+		.attr("y", (d, i) => i * 30 + 15);
+
+	// 7. Set up interactions
 }
 
 drawTreeMap();
