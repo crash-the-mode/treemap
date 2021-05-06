@@ -13,7 +13,7 @@ async function drawTreeMap() {
 		width: width,
 		height: height,
 		margin: {
-			top: 50,
+			top: 100,
 		},
 	};
 	dimensions.boundedHeight = height - dimensions.margin.top;
@@ -78,7 +78,23 @@ async function drawTreeMap() {
 		.append("tspan")
 		.attr("x", 5)
 		.attr("y", (d, i) => i * 15 + 15)
-		.text(d => d)
+		.text(d => d);
+
+	// 6. Draw peripherals
+
+	const title = canvas.append("text")
+		.attr("id", "title")
+		.text(movies.name)
+		.attr("x", dimensions.width / 2)
+		.attr("y", 50)
+		.style("text-anchor", "middle");
+
+	const description = canvas.append("text")
+		.attr("id", "description")
+		.text("Top 47 US Box Office Performers")
+		.attr("x", dimensions.width / 2)
+		.attr("y", 75)
+		.style("text-anchor", "middle")
 }
 
 drawTreeMap();
