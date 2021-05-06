@@ -3,3 +3,12 @@ body {
 	margin: 0;
 	padding: 0.25em;
 }
+#wrapper {
+	position: relative;
+}
+#tooltip {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 999;
+	position: absolute;
+}

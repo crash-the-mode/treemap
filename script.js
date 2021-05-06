@@ -5,6 +5,10 @@ async function drawTreeMap() {
 	const movies = await d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json");
 	console.log(movies);
 
+	const nameAccessor = d => d.data.name;
+	const catAccessor = d => d.data.category;
+	const valAccessor = d => d.data.value;
+
 	// 2. Create dimensions
 	
 	const width = 1750;
@@ -66,16 +70,16 @@ async function drawTreeMap() {
 		.attr("fill", d => {
 			while( d.depth > 1 )
 				d = d.parent;
-			return colorScale(d.data.name);
+			return colorScale(nameAccessor(d));
 		})
 		.attr("class", "tile")
-		.attr("data-name", d => d.data.name)
-		.attr("data-category", d => d.data.category)
-		.attr("data-value", d => d.data.value);
+		.attr("data-name", d => nameAccessor(d))
+		.attr("data-category", d => catAccessor(d))
+		.attr("data-value", d => valAccessor(d));
 
 	const tileText = tileGroups.append("text")
 		.selectAll("tspan")
-		.data(d => d.data.name.split(" "))
+		.data(d => nameAccessor(d).split(" "))
 		.enter()
 		.append("tspan")
 		.attr("x", 5)
@@ -112,17 +116,35 @@ async function drawTreeMap() {
 		.attr("y", (d, i) => i * 30)
 		.attr("width", 20)
 		.attr("height", 20)
-		.attr("fill", d => colorScale(d.data.name));
+		.attr("fill", d => colorScale(nameAccessor(d)));
 
 	const legendText = legendGroup.selectAll(".legend-text")
 		.data(nodes.children)
 		.enter()
 		.append("text")
-		.text(d => d.data.name)
+		.text(d => nameAccessor(d))
 		.attr("x", 30)
 		.attr("y", (d, i) => i * 30 + 15);
 
 	// 7. Set up interactions
+
+	tileGroups.on("mouseenter", onMouseEnter).on("mouseleave", onMouseLeave);
+	const tooltip = d3.select("#tooltip");
+
+	function onMouseEnter(e, datum) {
+	//	console.log({e, datum});
+		tooltip.select("#movie")
+			.text(`Movie: ${nameAccessor(datum)}`);
+		tooltip.select("#category")
+			.text(`Category: ${catAccessor(datum)}`);
+		tooltip.select("#value")
+			.text(`US Box Office: $${d3.format(",")(valAccessor(datum))}`);
+		tooltip.attr("data-value", valAccessor(datum))
+		tooltip.style("opacity", 1);
+	}
+	function onMouseLeave(e, datum) {
+		tooltip.style("opacity", 0);
+	}
 }
 
 drawTreeMap();
