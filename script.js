@@ -41,11 +41,22 @@ async function drawTreeMap() {
 	d3.treemap().size([width, dimensions.boundedHeight]).padding(1)(nodes);
 	console.log(nodes);
 
+	const clips = treemap.append("defs")
+		.selectAll("clipPath")
+		.data(nodes.leaves())
+		.enter()
+		.append("clipPath")
+		.attr("id", (d, i) => `clipPath-${i}`)
+		.append("rect")
+		.attr("width", d => d.x1 - d.x0)
+		.attr("height", d => d.y1 - d.y0);
+
 	const tileGroups = treemap.selectAll("g")
 		.data(nodes.leaves())
 		.enter()
 		.append("g")
-		.style("transform", d => `translate(${d.x0}px, ${d.y0}px)`);
+		.style("transform", d => `translate(${d.x0}px, ${d.y0}px)`)
+		.attr("clip-path", (d, i) => `url(#clipPath-${i})`);
 
 	const tiles = tileGroups.append("rect")
 		.attr("width", d => d.x1 - d.x0)
@@ -58,10 +69,16 @@ async function drawTreeMap() {
 		.attr("class", "tile")
 		.attr("data-name", d => d.data.name)
 		.attr("data-category", d => d.data.category)
-		.attr("data-value", d => d.data.value)
+		.attr("data-value", d => d.data.value);
 
 	const tileText = tileGroups.append("text")
-		.text(d => d.data.name)
+		.selectAll("tspan")
+		.data(d => d.data.name.split(" "))
+		.enter()
+		.append("tspan")
+		.attr("x", 5)
+		.attr("y", (d, i) => i * 15 + 15)
+		.text(d => d)
 }
 
 drawTreeMap();
