@@ -3,7 +3,7 @@ async function drawTreeMap() {
 	// 1. Access data
 
 	const movies = await d3.json("https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json");
-	console.log(movies);
+//	console.log(movies);
 
 	const nameAccessor = d => d.data.name;
 	const catAccessor = d => d.data.category;
@@ -37,7 +37,7 @@ async function drawTreeMap() {
 	// 4. Create scales
 	
 	const colorLength = movies.children.length;
-	console.log(colorLength, typeof colorLength);
+//	console.log(colorLength, typeof colorLength);
 
 	const colorScale = d3.scaleOrdinal(d3.schemeDark2);
 
@@ -45,7 +45,7 @@ async function drawTreeMap() {
 	
 	const nodes = d3.hierarchy(movies).sum(d => d.value).sort((a, b) => b.value - a.value);
 	d3.treemap().size([dimensions.boundedWidth, dimensions.boundedHeight]).padding(1)(nodes);
-	console.log(nodes);
+//	console.log(nodes);
 
 	const clips = treemap.append("defs")
 		.selectAll("clipPath")
@@ -106,7 +106,7 @@ async function drawTreeMap() {
 		.attr("id", "legend")
 		.style("transform", `translate(${dimensions.boundedWidth + 25}px, ${dimensions.boundedHeight / 2}px)`);
 
-	console.log(nodes.children)
+//	console.log(nodes.children)
 	const legendRects = legendGroup.selectAll(".legend-item")
 		.data(nodes.children)
 		.enter()
