@@ -29,3 +29,6 @@ body {
 #movie, #category, #value {
 	margin: 0.25rem;
 }
+tspan {
+	font-size: 0.65em;
+}

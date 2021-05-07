@@ -145,7 +145,7 @@ async function drawTreeMap() {
 		tooltip.select("#value")
 			.text(`US Box Office: $${d3.format(",")(valAccessor(datum))}`);
 		tooltip.attr("data-value", valAccessor(datum));
-		tooltip.style("transform", `translate(${x}px, calc(-100% + ${y}px))`)
+		tooltip.style("transform", `translate(calc(-10% + ${x}px), calc(-105% + ${y}px))`)
 		tooltip.style("opacity", 1);
 	}
 	function onMouseLeave(e, datum) {
