@@ -3,9 +3,18 @@ body {
 	margin: 0;
 	padding: 0.25em;
 	font-family: sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 #wrapper {
 	position: relative;
+}
+#title {
+	font-size: 3.5em;
+}
+#description {
+	font-size: 1.5em;
 }
 #tooltip {
 	opacity: 0;

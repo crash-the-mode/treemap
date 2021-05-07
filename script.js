@@ -99,7 +99,7 @@ async function drawTreeMap() {
 		.attr("id", "description")
 		.text("Top 47 US Box Office Performers Grouped by Genre")
 		.attr("x", dimensions.width / 2)
-		.attr("y", 75)
+		.attr("y", 85)
 		.style("text-anchor", "middle");
 
 	const legendGroup = canvas.append("g")
