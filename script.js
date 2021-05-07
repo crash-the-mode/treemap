@@ -128,18 +128,24 @@ async function drawTreeMap() {
 
 	// 7. Set up interactions
 
-	tileGroups.on("mouseenter", onMouseEnter).on("mouseleave", onMouseLeave);
+	tileGroups.on("mousemove", onMouseEnter).on("mouseleave", onMouseLeave);
 	const tooltip = d3.select("#tooltip");
 
 	function onMouseEnter(e, datum) {
-	//	console.log({e, datum});
+//		console.log({e, datum});
+//		console.log(d3.pointer(e));
+		const mouseCoords = d3.pointer(e);
+		let x = mouseCoords[0] + datum.x0;
+		let y = mouseCoords[1] + dimensions.margin.top + datum.y0;
+
 		tooltip.select("#movie")
 			.text(`Movie: ${nameAccessor(datum)}`);
 		tooltip.select("#category")
 			.text(`Category: ${catAccessor(datum)}`);
 		tooltip.select("#value")
 			.text(`US Box Office: $${d3.format(",")(valAccessor(datum))}`);
-		tooltip.attr("data-value", valAccessor(datum))
+		tooltip.attr("data-value", valAccessor(datum));
+		tooltip.style("transform", `translate(${x}px, calc(-100% + ${y}px))`)
 		tooltip.style("opacity", 1);
 	}
 	function onMouseLeave(e, datum) {

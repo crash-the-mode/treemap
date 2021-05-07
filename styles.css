@@ -2,6 +2,7 @@ body {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0.25em;
+	font-family: sans-serif;
 }
 #wrapper {
 	position: relative;
@@ -11,4 +12,11 @@ body {
 	pointer-events: none;
 	z-index: 999;
 	position: absolute;
+	text-align: center;
+	background-color: rgba(255, 255, 204, 0.9);
+	border-radius: 12px;
+	padding: 0.25rem;
+}
+#movie, #category, #value {
+	margin: 0.25rem;
 }
